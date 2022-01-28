@@ -1,3 +1,4 @@
+const IPCIDR = require('ip-cidr');
 const ipAddresses = require("../models/ipAddresses.model")
 
 function getIpAddresses (req, res) {
@@ -5,7 +6,15 @@ function getIpAddresses (req, res) {
 }
 
 function createIpAddresses (req, res) {
-    console.log('creating new ip');
+    const cidrAddress = req.body.address;
+    if (!cidrAddress) {
+        return res.status(400).json({
+            error: 'Missing CIDR address'
+        })
+    }
+    
+    
+    
 }
 
 function aquireIpAddresses (req, res) {
