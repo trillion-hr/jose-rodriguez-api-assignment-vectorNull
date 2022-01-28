@@ -1,0 +1,25 @@
+{
+  "name": "jose-rodriguez-api-assignment-vectornull",
+  "version": "1.0.0",
+  "description": "Create a simple IP Address Management REST API on top of any data store. It will include the ability to add IP Addresses by CIDR block and then either acquire or release IP addresses individually. Each IP address will have a status associated with it that is either “available” or “acquired”.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trillion-hr/jose-rodriguez-api-assignment-vectorNull.git"
+  },
+  "author": "Jose Rodriguez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/trillion-hr/jose-rodriguez-api-assignment-vectorNull/issues"
+  },
+  "homepage": "https://github.com/trillion-hr/jose-rodriguez-api-assignment-vectorNull#readme",
+  "dependencies": {
+    "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
