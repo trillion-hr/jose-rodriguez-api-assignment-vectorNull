@@ -1,14 +1,24 @@
 const express = require('express');
-const path = require('path');
+const mongoose = require('mongoose');
+require('dotenv').config();
 
 const ipAddressRouter = require('./routes/ipAddresses.router')
 
 const app = express();
 
 const PORT = process.env.PORT;
+const MONGO_URL = process.env.MONGO_URL;
+
+
+mongoose.connect(MONGO_URL);
+mongoose.connection.once('open', () => {
+    console.log('MongoDB connection ready...')
+})
+mongoose.connection.on('error', (err) => {
+    console.error(err);
+})
 
 app.use(express.json());
-
 app.use('/api/v1/', ipAddressRouter);
 
 
