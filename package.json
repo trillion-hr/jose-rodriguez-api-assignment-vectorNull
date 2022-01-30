@@ -17,8 +17,10 @@
   },
   "homepage": "https://github.com/trillion-hr/jose-rodriguez-api-assignment-vectorNull#readme",
   "dependencies": {
+    "dotenv": "^14.3.2",
     "express": "^4.17.2",
-    "ip-cidr": "^3.0.4"
+    "ip-cidr": "^3.0.4",
+    "mongoose": "^6.1.8"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
