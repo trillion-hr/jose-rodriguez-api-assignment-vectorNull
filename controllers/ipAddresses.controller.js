@@ -1,3 +1,4 @@
+const res = require('express/lib/response');
 const IPCIDR = require('ip-cidr');
 const ipAddresses = require("../models/ipAddresses.model");
 
@@ -45,25 +46,36 @@ function aquireIpAddresses (req, res) {
     
     const ipAddress = req.body.address;
 
+    updateIpStatus(res, ipAddresses, ipAddress);
+}
 
+function releaseIpAddresses (req, res) {
+    
+    const ipAddress = req.body.address;
+
+    updateIpStatus(res, ipAddresses, ipAddress);
+}
+
+function updateIpStatus (res, ipAddresses, ipAddress) {
+    
     for(let i = 0; i < ipAddresses.length; i++) {
 
-        if (ipAddresses[i].address == ipAddress) {
+        if (ipAddresses[i].address === ipAddress && ipAddresses[i].status === 'available') {
             ipAddresses[i].status = "aquired";
             
             return res.status(200).json({
                 message: `IP address ${ipAddress} has been aquired.`,
         })
+           
         } else {
-            return res.status(400).json({
-                message: "IP address not found. Please enter another address."
+            ipAddresses[i].status = "available";
+
+            return res.status(200).json({
+                message: `IP address ${ipAddress} has been released.`
             })
         }      
     }
-}
 
-function releaseIpAddresses (req, res) {
-    console.log('releasing ip address')
 }
 
 module.exports = {
