@@ -13,4 +13,5 @@ The REST API must support four endpoint:
 Set PORT environment variable:
 
 Windows: `set PORT=<port-number>`
+
 MacOS/Linux: `export PORT=<port-number>`
