@@ -1,19 +1,27 @@
-const res = require('express/lib/response');
 const IPCIDR = require('ip-cidr');
-const ipAddresses = require("../models/ipAddresses.model");
+const IpAddress = require('../models/ipAddresses.mongo');
 
-function getIpAddresses (req, res) {
-    res.json(ipAddresses);
+module.exports = {
+    getIpAddresses,
+    createIpAddresses,
+    acquireIpAddress,
+    releaseIpAddress,
 }
 
-function createIpAddresses (req, res) {
-  
+async function getIpAddresses (req, res) {
+
+    const ipAddresses = await IpAddress.find({});
+    res.status(200).json(ipAddresses);
+}
+
+async function createIpAddresses (req, res) {
+
     const cidrAddress = req.body.address;
  
     if (cidrAddress === '') {
         return res.status(400).json({
             error: 'Missing CIDR address',
-            message: 'Please include enter a CIDR address.'
+            message: 'Please enter a CIDR address.'
         })
     }
 
@@ -24,64 +32,76 @@ function createIpAddresses (req, res) {
         })
     }
 
-    
     const cidr = new IPCIDR(cidrAddress);
-    const addressArray = cidr.toArray();
-
-    // CHECK FOR DUPLICATES
+    addressArray = cidr.toArray();
 
     for (let i = 0; i < addressArray.length; i++) {
-        const result = {};
-        result[i] = {
-            address: addressArray[i],
-            status: "available"
+        
+        const existingIpAddress = await IpAddress.findOne({ address: addressArray[i]})
+        if(existingIpAddress) {
+            return res.status(400).json('This block of IP addresses already exists.')
         }
-        ipAddresses.push(result[i]);
+        const ipaddress = new IpAddress();
+        ipaddress.address = addressArray[i];
+        ipaddress.status = 'available';
+        await ipaddress.save();
     }
-    res.send(ipAddresses);
-    
+    res.status(200).json(`Successfully created ${addressArray.length} ip addresses.`)
 }
 
-function aquireIpAddresses (req, res) {
+async function acquireIpAddress (req, res) {
     
     const ipAddress = req.body.address;
-
-    updateIpStatus(res, ipAddresses, ipAddress);
-}
-
-function releaseIpAddresses (req, res) {
     
-    const ipAddress = req.body.address;
+    const addressToUpdate = await IpAddress.findOne({ address: ipAddress });
 
-    updateIpStatus(res, ipAddresses, ipAddress);
-}
+    checkForIpAddress(addressToUpdate, res);
 
-function updateIpStatus (res, ipAddresses, ipAddress) {
-    
-    for(let i = 0; i < ipAddresses.length; i++) {
-
-        if (ipAddresses[i].address === ipAddress && ipAddresses[i].status === 'available') {
-            ipAddresses[i].status = "aquired";
-            
-            return res.status(200).json({
-                message: `IP address ${ipAddress} has been aquired.`,
+    if(addressToUpdate && addressToUpdate.status === 'available') {
+        addressToUpdate.status = 'acquired';
+        const updatedAddress = await addressToUpdate.save();
+        res.status(200).json({
+            message: `IP address ${updatedAddress.address} has been acquired.`
         })
-           
-        } else {
-            ipAddresses[i].status = "available";
-
-            return res.status(200).json({
-                message: `IP address ${ipAddress} has been released.`
-            })
-        }      
+    } else {
+        res.status(400).json({
+            error: 'Address already acquired.',
+            message: `IP address ${addressToUpdate.address} has already been acquired. Please choose another IP address.`
+        })
     }
-
 }
 
-module.exports = {
-    getIpAddresses,
-    createIpAddresses,
-    aquireIpAddresses,
-    releaseIpAddresses
+async function releaseIpAddress (req, res) {
+    
+    const ipAddress = req.body.address;
+    
+    const addressToUpdate = await IpAddress.findOne({ address: ipAddress });
+    
+    checkForIpAddress(addressToUpdate, res);
+
+    if(addressToUpdate && addressToUpdate.status === 'acquired') {
+        addressToUpdate.status = 'available';
+        const updatedAddress = await addressToUpdate.save();
+        res.status(200).json({
+            message: `IP address ${updatedAddress.address} has been released.`
+        })
+    } else {
+        res.status(400).json({
+            error: 'Address already released.',
+            message: `IP address ${addressToUpdate.address} has already been released. Please choose another address.`
+        })
+    }
 }
+
+function checkForIpAddress(addressToUpdate, res) {
+    
+    if(!addressToUpdate) {
+        return res.status(400).json({
+            error: 'Address does not exist.',
+            message: 'The address to be updated does not exist in database.'
+        })
+    }
+}
+
+
 
