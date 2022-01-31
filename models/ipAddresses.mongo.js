@@ -1,9 +1,12 @@
 const mongoose = require('mongoose');
 
-const ipAddressesSchema = new mongoose.Schema({
+const Schema = mongoose.Schema;
+
+const ipAddressesSchema = new Schema({
     address: {
         type: String,
         required: true,
+        unique: true,
     },
     status: {
         type: String,
@@ -11,4 +14,4 @@ const ipAddressesSchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('ipAddress', ipAddressesSchema);
+module.exports = mongoose.model('IpAddress', ipAddressesSchema);
