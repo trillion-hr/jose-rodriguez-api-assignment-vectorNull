@@ -8,6 +8,10 @@ The REST API must support four endpoint:
   * **Acquire an IP** - set the status of a certain IP to “acquired”
   * **Release an IP** - set the status of a certain IP to “available”
 
+
+## API Documentation:
+
+https://documenter.getpostman.com/view/7914740/UVeCRTxC
 ## Notes
 
 Set PORT environment variable:
@@ -15,3 +19,5 @@ Set PORT environment variable:
 Windows: `set PORT=<port-number>`
 
 MacOS/Linux: `export PORT=<port-number>`
+
+
