@@ -11,7 +11,7 @@ const ipAddressRouter = express.Router();
 
 ipAddressRouter.get('/list-ip-addresses', getIpAddresses);
 ipAddressRouter.post('/create-new-ip-addresses/', createIpAddresses);
-ipAddressRouter.post('/aquire-ip-address/', acquireIpAddress);
+ipAddressRouter.post('/acquire-ip-address/', acquireIpAddress);
 ipAddressRouter.post('/release-ip-address/', releaseIpAddress);
 
 module.exports = ipAddressRouter;
