@@ -8,7 +8,7 @@ const ipAddressRouter = require('./routes/ipAddresses.router')
 
 const app = express();
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 const MONGO_URL = process.env.MONGO_URL;
 
 
