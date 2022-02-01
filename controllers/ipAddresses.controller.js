@@ -39,7 +39,7 @@ async function createIpAddresses (req, res) {
         
         const existingIpAddress = await IpAddress.findOne({ address: addressArray[i]})
         if(existingIpAddress) {
-            return res.status(400).json('This block of IP addresses already exists.')
+            return res.status(400).json('This IP address already exists.')
         }
         const ipaddress = new IpAddress();
         ipaddress.address = addressArray[i];
