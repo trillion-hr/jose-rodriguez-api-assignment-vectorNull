@@ -15,7 +15,7 @@ https://documenter.getpostman.com/view/7914740/UVeCRTxC
 ## Notes
 To test the API on localhost:
 
-- Create a .env in the root directory of the application
+- Create a .env file in the root directory of the application
 
 - In the .env file, add the following line of code (update USERNAME, PASSWORD, and DATABASE_NAME with the corresponding username, password, and database name provided by MongoDB Cloud in connection settings)
 
