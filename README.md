@@ -13,11 +13,21 @@ The REST API must support four endpoint:
 
 https://documenter.getpostman.com/view/7914740/UVeCRTxC
 ## Notes
+To test the API on localhost:
 
-Set PORT environment variable:
+- Create a .env in the root directory of the application
 
-Windows: `set PORT=<port-number>`
+- In the .env file, add the following line of code (update USERNAME, PASSWORD, and DATABASE_NAME with the corresponding username, password, and database name provided by MongoDB Cloud in connection settings)
 
-MacOS/Linux: `export PORT=<port-number>`
+  `MONGO_URL=mongodb+srv://USERNAME:PASSWORD@CLUSTER_NAME.cqliu.mongodb.net/DATABASE_NAME?retryWrites=true&w=majority`
+
+- Open a terminal and run the following command to install dependencies (makes sure you are in the directory that contains your package.json file).
+
+  `sudo npm install` for Linux/MacOS
+
+  `npm install` For Windows (must be Adminstrator)
+
+- To start the server and connect to MongoDB, run:
+  `npm start`
 
 
